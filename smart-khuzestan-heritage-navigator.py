@@ -23,9 +23,7 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 from sklearn.metrics import accuracy_score
 
-# -----------------------------
-# ۱. تنظیمات اولیه + فونت فارسی
-# -----------------------------
+#  تنظیمات اولیه و فونت فارسی
 random.seed(42)
 np.random.seed(42)
 
@@ -427,4 +425,5 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("## smart Khuzestan heritage navigator")
 st.sidebar.markdown("- Iran")
 st.sidebar.markdown("- **city:** Khuzestan")
+
 
