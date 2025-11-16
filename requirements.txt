@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+scikit-learn
+imbalanced-learn
+ortools
+folium
+streamlit-folium
+psycopg2-binary
+sqlalchemy
+matplotlib
+arabic-reshaper
+python-bidi
