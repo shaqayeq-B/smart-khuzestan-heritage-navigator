@@ -71,6 +71,4 @@ smart-khuzestan-heritage-navigator/
 | **Folium** | Interactive map |
 | **PostgreSQL** | Results storage |
 
-**توسعه‌دهنده:** [شقایق باقریان]
-**توسعه‌دهنده:** [نام شما]| **Vazir Font** | Persian text rendering |
-
+**توسعه‌دهنده:** [شقایق باقریان
