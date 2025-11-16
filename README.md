@@ -1,4 +1,4 @@
-# smart khuzestan heritage navigator (# میراث‌یاب هوشمند خوزستان) 
+# smart khuzestan heritage navigator (میراث‌یاب هوشمند خوزستان) 
 **بهینه‌سازی مسیرهای گردشگری میراث فرهنگی با هوش مصنوعی**
 
 
