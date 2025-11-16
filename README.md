@@ -35,6 +35,9 @@ git clone https://github.com/shaqayeq-B/smart-khuzestan-heritage-navigator
 # ۲. نصب وابستگی‌ها
 pip install -r requirements.txt
 pushd (location of the file of smart-khuzestan-heritage-navigator.py)
+
+# ۳. اجرای اپلیکیشن
+
 streamlit smart-khuzestan-heritage-navigator.py
 
 
@@ -67,4 +70,3 @@ smart-khuzestan-heritage-navigator/
 | **PostgreSQL** | Results storage |
 | **Vazir Font** | Persian text rendering |
 
-# ۳. اجرای اپلیکیشن
