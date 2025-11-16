@@ -71,4 +71,7 @@ smart-khuzestan-heritage-navigator/
 | **Folium** | Interactive map |
 | **PostgreSQL** | Results storage |
 
-**توسعه‌دهنده:** [شقایق باقریان
+
+
+
+**
