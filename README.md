@@ -68,5 +68,8 @@ smart-khuzestan-heritage-navigator/
 | **OR-Tools** | TSP route optimization |
 | **Folium** | Interactive map |
 | **PostgreSQL** | Results storage |
+
+
+**توسعه‌دهنده:** شقایق باقریان 
 | **Vazir Font** | Persian text rendering |
 
