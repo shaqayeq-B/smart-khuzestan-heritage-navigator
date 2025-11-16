@@ -45,13 +45,11 @@ def persian_text(text):
     reshaped = arabic_reshaper.reshape(text)
     return get_display(reshaped)
 
-# -----------------------------
-# ۲. اتصال به PostgreSQL
-# -----------------------------
+#  اتصال به PostgreSQL
 DB_HOST = "localhost"
 DB_NAME = "tourism23_db"
 DB_USER = "postgres"
-DB_PASS = "1234567890"
+DB_PASS = "1234567890" #پسورد خود را وارد کنید
 DB_PORT = "5432"
 
 def create_database():
@@ -77,18 +75,14 @@ def connect_db():
 
 create_database()
 
-# -----------------------------
-# ۳. تمام مکان‌های باستانی خوزستان
-# -----------------------------
+
 archaeology_sites = [
     "چغازنبیل", "شوش", "هفت‌تپه", "سازه‌های آبی شوشتر", "قلعه شوش", "آرامگاه دانیال نبی",
     "کاخ آپادانا شوش", "اشکفت سلمان", "کول فرح", "چغا تپه", "تپه گلگیر", "ایوان کرخه",
     "قدمگاه صاحب الزمان", "پامنار", "زراس", "شیمن", "باجول", "سوسن", "مهرویان", "تاریشا"
 ]
 
-# -----------------------------
-# ۴. تمام صنایع دستی خوزستان
-# -----------------------------
+
 handicraft_shops = [
     "بازار عبدالحمید (اهواز)", "کارگاه قلم‌زنی دزفول", "صنایع دستی حصیربافی شادگان", 
     "کارگاه کپوبافی اهواز", "عبابافی بختیاری", "گیوه‌بافی دزفول", "گلیم‌بافی بهبهان",
@@ -99,9 +93,7 @@ handicraft_shops = [
 season_weights = {"spring": 1.5, "summer": 1.3, "autumn": 1.0, "winter": 0.8}
 FUEL_COST_PER_KM = 0.5
 
-# -----------------------------
-# ۵. داده‌های کامل با لوکیشن‌های واقعی (سود تصادفی)
-# -----------------------------
+#  داده‌های کامل با لوکیشن‌های واقعی (سود تصادفی)
 data = [
     # باستانی
     {"name": "چغازنبیل", "spring_profit": 500, "summer_profit": 450, "autumn_profit": 400, "winter_profit": 300, "total_profit": 1650, "latitude": 32.0083, "longitude": 48.5250},
@@ -176,9 +168,7 @@ except Exception as e:
     st.error(f"خطا در خواندن دیتابیس: {e}")
     st.stop()
 
-# -----------------------------
-# ۵. توابع کمکی
-# -----------------------------
+
 def distance_km(lat1, lon1, lat2, lon2):
     R = 6371
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
@@ -256,9 +246,7 @@ def create_random_path(max_distance=200, max_locations=6):
         "path": path
     }
 
-# -----------------------------
-# ۶. داده‌های آموزشی
-# -----------------------------
+
 @st.cache_data
 def load_data():
     train_paths = [p for p in [create_random_path() for _ in range(1000)] if p]
@@ -274,12 +262,8 @@ def load_data():
 
 train_df, test_df = load_data()
 
-# -----------------------------
-# ۸. آموزش دو مدل: کل + فصلی
-# -----------------------------
 feature_cols = ["arch_sites_count", "handicrafts_count", "total_profit", "total_distance"]
 
-# --- مدل کل (۴ فصل) ---
 high_threshold = np.percentile(train_df['total_profit_adjusted'], 75)
 medium_threshold = np.percentile(train_df['total_profit_adjusted'], 50)
 train_df['category'] = train_df['total_profit_adjusted'].apply(
@@ -301,7 +285,6 @@ grid_year = GridSearchCV(clf_year, param_grid, cv=5, n_jobs=-1)
 grid_year.fit(X_train_res, y_train_res)
 best_clf_year = grid_year.best_estimator_
 
-# --- مدل فصلی ---
 seasonal_data = []
 for _, row in train_df.iterrows():
     path = row['path']
@@ -332,9 +315,7 @@ grid_season = GridSearchCV(clf_season, param_grid, cv=5, n_jobs=-1)
 grid_season.fit(X_train_s_res, y_train_s_res)
 best_clf_season = grid_season.best_estimator_
 
-# -----------------------------
-# ۹. نمایش دو دقت
-# -----------------------------
+
 y_train_pred_year = best_clf_year.predict(X_train_res)
 train_accuracy_year = accuracy_score(y_train_res, y_train_pred_year)
 y_test_pred_year = best_clf_year.predict(X_test)
@@ -344,9 +325,7 @@ st.markdown("---")
 st.success(f"**دقت آموزشی (سود کل): {train_accuracy_year:.1%}**")
 st.success(f"**دقت تست (سود کل): {test_accuracy_year:.1%}**")
 
-# -----------------------------
-# ۱۰. Streamlit App
-# -----------------------------
+
 st.set_page_config(page_title="میراث خوزستان", layout="wide")
 st.title("میراث‌یاب هوشمند خوزستان")
 
@@ -369,13 +348,11 @@ if st.button("تحلیل مسیر"):
         path = [path[i] for i in tsp_order]
         coords = [coords[i] for i in tsp_order]
 
-        # --- سود کل (۴ فصل) ---
         season_avg = sum(season_weights.values()) / 4
         arch_total_year = sum(locations_df.loc[locations_df['name']==s, 'total_profit'].values[0] * season_avg for s in user_arch)
         hand_total_year = sum(locations_df.loc[locations_df['name']==h, 'total_profit'].values[0] * season_avg for h in user_hand)
         total_profit_year = arch_total_year + hand_total_year
 
-        # --- سود فصل ---
         season_map = {"بهار": "spring", "تابستان": "summer", "پاییز": "autumn", "زمستان": "winter"}
         season_key = season_map[selected_season]
         season_weight = season_weights[season_key]
@@ -388,13 +365,11 @@ if st.button("تحلیل مسیر"):
         fuel_cost = int(total_distance * FUEL_COST_PER_KM)
         total_profit_season_adjusted = total_profit_season - int(total_distance) - fuel_cost
 
-        # --- دسته‌بندی ---
         user_features_year = pd.DataFrame([[len(user_arch), len(user_hand), total_profit_year, total_distance]], columns=feature_cols)
         pred_year = best_clf_year.predict(user_features_year)[0]
         user_features_season = pd.DataFrame([[len(user_arch), len(user_hand), total_profit_season, total_distance]], columns=feature_cols)
         pred_season = best_clf_season.predict(user_features_season)[0]
 
-        # --- نقشه ---
         m = folium.Map(location=[31.8, 48.5], zoom_start=9, tiles="OpenStreetMap")
         folium.PolyLine(coords, color="blue", weight=5, opacity=0.8).add_to(m)
         for i, (lat, lng) in enumerate(coords):
@@ -411,7 +386,6 @@ if st.button("تحلیل مسیر"):
         st.success(f"**سود {selected_season}: {total_profit_season:,.0f}** → **دسته: {pred_season}**")
         st.info(f"**مسیر بهینه:** {' → '.join(path)} | **فاصله:** {total_distance:.1f} km")
 
-        # --- ذخیره در دیتابیس ---
         try:
             conn = connect_db()
             cur = conn.cursor()
@@ -448,10 +422,9 @@ if st.button("تحلیل مسیر"):
 
 st.caption("چهارمین جشنواره بین‌المللی چندرسانه‌ای میراث فرهنگی – بخش میراث دیجیتال")
 
-# -----------------------------
-# User Info
-# -----------------------------
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("## smart Khuzestan heritage navigator")
 st.sidebar.markdown("- Iran")
 st.sidebar.markdown("- **city:** Khuzestan")
+
